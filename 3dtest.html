@@ -1,0 +1,36 @@
+<head>
+  <title>3dtest</title>
+</head>
+
+<body>
+  {{> hello}}
+</body>
+
+<template name="hello">
+	<h1>Reactive 3D with x3dom demo</h1>
+
+	<div>
+	  <button class="add-box">Click to add box</button>
+	  <button class="clear-boxes">Click to clear all boxes</button>
+	</div>
+
+  <x3d width="500px" height="400px">
+	  <scene>
+	  	<directionalLight direction='-1 -1 -1' intensity='3.0'></directionalLight>
+	  	{{#each boxes}}
+	  		<transform translation="{{x}} {{y}} {{z}}" scale="0.2 0.2 0.2">
+			    <shape>
+			      <appearance>
+			        <material diffuseColor="{{color}}"></material>
+			      </appearance>
+			      <box></box>
+			    </shape>
+			  </transform>
+	    {{/each}}
+	  </scene>
+	</x3d>
+
+	<div style="clear: both; padding-top: 10px;">
+		By Sashko Stubailo
+	</div>
+</template>
