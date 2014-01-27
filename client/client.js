@@ -3,7 +3,9 @@ var colors = {
   brown: ["#c2892b", "#af7c27", "#b57813"],
   red: ["#e91d45", "#e91d22", "#e60f3d"],
   green: ["#30d02c", "#26bf22", "#30c12d"],
-  blue: ["#1d57e9", "#194dd1", "#1d68d9"]
+  blue: ["#1d57e9", "#194dd1", "#1d68d9"],
+  purple: ["#9414c9"],
+  yellow: ["#fee619"]
 };
 
 // set initial color
