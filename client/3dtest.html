@@ -16,6 +16,8 @@
 
 		{{#if buildMode}}
 			<h2>Tools</h2>
+			<p>Click to place a block</p>
+			<p>Right-click to delete one</p>
 			<button class="clear-boxes btn">Clear all blocks</button>
 
 			<div class="color-picker">
@@ -26,6 +28,10 @@
 					</div>
 				{{/each}}
 			</div>
+		{{else}}
+			<p>Drag to rotate view</p>
+			<p>Double-click to center<br />on a block</p>
+			<p>Scroll to zoom</p>
 		{{/if}}
 
 		<div class="github-link">

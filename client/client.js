@@ -30,7 +30,7 @@ shapeClicked = function (event) {
         y: y,
         z: z
       });
-    } else if (event.button === 4) {
+    } else if (event.button === 4 || event.button === 2) {
       // right click, remove box
       Boxes.remove(event.target.id);
     }
