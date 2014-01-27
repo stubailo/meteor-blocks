@@ -1,0 +1,86 @@
+.ui {
+	background: #eee;
+	border-radius: 5px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 10;
+
+	border: 1px #ccc solid;
+	padding: 10px;
+
+	h1 {
+		text-transform: uppercase;
+		font-size: 1.2em;
+		margin-top: 0;
+	}
+
+	h2 {
+		text-transform: uppercase;
+		font-size: 1em;
+		margin-top: 20px;
+		font-weight: bold;
+		margin-bottom: 5px;
+		color: #777;
+	}
+
+	.subtitle {
+		font-size: 0.9;
+		color: #555;
+		margin-top: -5px;
+	}
+
+	.github-link {
+		margin-top: 10px;
+		padding-top: 10px;
+	}
+
+	.btn {
+		padding: 4px 8px;
+		background: white;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+
+		&.active {
+			border-color: black;
+			background-color: white;
+			font-weight: bold;
+		}
+	}
+}
+
+x3d {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	cursor: move;
+}
+
+.build x3d {
+	cursor: crosshair;
+}
+
+.color-picker {
+	.swatch {
+		width: 40px;
+		height: 40px;
+		color: white;
+		padding: 5px;
+		margin: 0 5px 5px 0;
+		border: 2px solid transparent;
+
+		display: inline-block;
+		cursor: pointer;
+
+		&:hover {
+			border-color: black;
+		}
+
+		&.active {
+			border-color: black;
+		}
+	}
+}
