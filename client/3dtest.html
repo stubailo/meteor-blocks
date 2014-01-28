@@ -55,7 +55,7 @@
 	  	
 	  	<!-- ground -->
 	  	<transform rotation="-1.5707963267948966 0 0 1.5707963267948966">
-		  	<shape onmousedown="shapeClicked(event)">
+		  	<shape>
 		  		<appearance>
 		  			<!-- XXX could be improved to a grass texture -->
 			  		<material diffuseColor="#4A9"></material>
@@ -68,7 +68,7 @@
 	  	{{#each boxes}}
 	  		<!-- scale 0.5 because default size of box is 2 units on a side -->
 	  		<transform translation="{{x}} {{y}} {{z}}" scale="0.5 0.5 0.5">
-			    <shape id="{{_id}}" onmousedown="shapeClicked(event)">
+			    <shape id="{{_id}}">
 			      <appearance>
 			      	<!-- could be improved to have texture and not just color -->
 			        <material diffuseColor="{{color}}" ambientIntensity="0.1"
