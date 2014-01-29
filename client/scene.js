@@ -67,14 +67,6 @@ Template.controls.events({
     Session.set("mode", "build");
   },
   "click button.freeze": function () {
-    var confirmed = confirm("The current view will be used as the thumbnail " +
-      "if you share this scene.\n\nPress OK to freeze the scene and create " +
-      "the thumbnail.");
-    
-    if (! confirmed) {
-      return;
-    }
-
     Meteor.call("freezeScene", Session.get("sceneId"), Utils.getScreenshot(),
       function (error) {
         if (! error) {

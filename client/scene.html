@@ -62,6 +62,13 @@
 			</p>
 		{{/unless}}
 
+		{{#if frozen}}
+			<h2>Make Your Own</h2>
+			<p>
+				<button class="clone btn btn-primary">Edit a Copy</button>
+			</p>
+		{{/if}}
+
 		{{#if buildMode}}
 			<h2>Build Controls</h2>
 			<p>
@@ -88,20 +95,15 @@
 
 		
 		{{#if frozen}}
-			<h2>Make Your Own</h2>
-			<p class="explanation">
-				This scene has been frozen.  Clone yourself a new version to edit it!
-			</p>
-			<button class="clone btn btn-sm btn-default">Clone</button>
 			<h2>Share</h2>
 			<p><img src="{{screenshot}}" class="screenshot" /></p>
 			<button class='btn btn-primary btn-sm facebook'>Share on Facebook</button>
 		{{else}}
 			<h2>Collaborate</h2>
 			<p>Anyone can collaborate on this scene if they go to this page.</p>
-			<p>Click freeze to save this version and publish it to the front page.</p>
-			<button class="freeze btn btn-sm btn-default">Freeze</button>
-			<button class="clone btn btn-sm btn-default">Clone</button>
+			<p>Click publish to save this version and publish it to the front page.</p>
+			<button class="freeze btn btn-sm btn-default">Publish</button>
+			<button class="clone btn btn-sm btn-default">Make a Copy</button>
 		{{/if}}
 
 		<div class="github-link">
