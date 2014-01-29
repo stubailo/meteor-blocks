@@ -30,26 +30,36 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<h1>Meteor Blocks</h1>
+
 				<p class="lead">The friendliest collaborative 3D pixel editor!</p>
-				<button class="btn btn-primary btn-lg new-scene">Build a Scene!</button>
+
+				<button class="btn btn-primary btn-lg new-scene">
+					Build a Scene!</button>
 
 				<hr />
+
 				<h3>How does it work?</h3>
+
 				<p>Meteor Blocks uses the <a href="http://meteor.com">Meteor</a> web
 					framework and <a href="http://www.x3dom.org/">X3DOM</a> together
 					to create a collaborative 3D scene editor.</p>
+
 				<p>When you want to collaborate, just send the URL of the scene
 					you are editing to someone else and they can edit it with you.
 					When you're done and you want to save a version of your scene,
 					just click Publish and it's enshrined in history.</p>
-				<p>
-					<a href="http://git.io/meteor3d">
-						Check out the source code on GitHub</a>
-				</p>
+
+				<p><a href="http://git.io/meteor3d">
+						Check out the source code on GitHub.</a></p>
+
+				<p>Written by <a href="https://github.com/stubailo">
+					Sashko Stubailo</a>.</p>
 			</div>
 			<div class="col-sm-8">
 				<h2>Recent Creations</h2>
+
 				<p>Click on a preview to see it in 3D.</p>
+				
 				{{#each scenes}}
 					{{#if screenshot}}
 						<a href="#/scene/{{_id}}" class="preview">

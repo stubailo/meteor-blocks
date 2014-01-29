@@ -1,4 +1,4 @@
-RouterClass = Backbone.Router.extend({
+var RouterClass = Backbone.Router.extend({
   routes: {
     "": "home",
     "scene/:_id": "scene"
@@ -12,6 +12,8 @@ RouterClass = Backbone.Router.extend({
   scene: function (sceneId) {
     var self = this;
 
+    // XXX this method can cause inconsistency between Session and subscription
+    // status
     Meteor.subscribe("scenes", sceneId, function () {
       // when the subscribe completes, check if the ID in the session is
       // a real ID; if it's not reset to the home page
