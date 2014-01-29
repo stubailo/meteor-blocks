@@ -126,7 +126,7 @@ Meteor.publish("scenes", function (sceneId) {
 });
 
 Meteor.publish("frozenScenes", function () {
-  return Scenes.find({frozen: true}, {$sort: {createdAt: -1}});
+  return Scenes.find({frozen: true});
 });
 
 Meteor.publish("boxes", function (sceneId) {

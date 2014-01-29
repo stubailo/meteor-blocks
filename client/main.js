@@ -1,7 +1,7 @@
 Template.home.helpers({
   scenes: function () {
     // all frozen scenes
-    return Scenes.find();
+    return Scenes.find({}, {sort: {createdAt: -1}});
   },
   calendar: function (date) {
     return moment(date).calendar();
