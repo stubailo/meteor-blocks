@@ -15,7 +15,7 @@ RouterClass = Backbone.Router.extend({
     Meteor.subscribe("scenes", sceneId, function () {
       // when the subscribe completes, check if the ID in the session is
       // a real ID; if it's not reset to the home page
-      if (Scenes.findOne(Session.get("sceneId"))) {
+      if (Scenes.findOne(sceneId)) {
         // we did good, set the ID in the session
         Session.set("sceneId", sceneId);
 
