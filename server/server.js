@@ -99,6 +99,7 @@ Meteor.methods({
         );
       } catch (error) {
         // do nothing, we still have the Data URI
+        console.log(error.stack);
       }
     }
 
