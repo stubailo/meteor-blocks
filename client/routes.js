@@ -29,14 +29,14 @@ var RouterClass = Backbone.Router.extend({
       // a real ID; if it's not reset to the home page
       if (Scenes.findOne(sceneId)) {
         // we did good, set the ID in the session
-        Session.set("sceneId", sceneId);
-        Session.set("loading", false);
-
         if (! Session.get("mode") && ! Utils.currentScene().frozen) {
           // set default mode
           Session.set("mode", "build");
         }
-        Meteor.subscribe("boxes", Session.get("sceneId"));
+        Meteor.subscribe("boxes", sceneId, function () {
+          Session.set("sceneId", sceneId);
+          Session.set("loading", false);
+        });
       } else {
         self.navigate("");
       }

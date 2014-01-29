@@ -18,7 +18,7 @@ Template.home.events({
 
 UI.body.helpers({
   sceneLoaded: function () {
-    return !! Session.get("sceneId");
+    return !! (Session.get("sceneId") && ! Session.get("loading"));
   },
   loading: function () {
     return !! Session.get("loading");

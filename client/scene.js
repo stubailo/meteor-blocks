@@ -104,6 +104,7 @@ Template.controls.events({
         });
   },
   "click button.clone": function () {
+    Session.set("loading", true);
     Meteor.call("cloneScene", Session.get("sceneId"), function (error, newId) {
       if (newId) {
         Router.navigate("/scene/" + newId, { trigger: true });
