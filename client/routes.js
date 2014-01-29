@@ -1,3 +1,9 @@
+var triggerGoogleAnalytics = function () {
+  if (window.ga) {
+    ga('send', 'pageview', window.location.origin + window.location.hash);
+  }
+};
+
 var RouterClass = Backbone.Router.extend({
   routes: {
     "": "home",
@@ -5,11 +11,13 @@ var RouterClass = Backbone.Router.extend({
   },
 
   home: function () {
+    triggerGoogleAnalytics();
     Session.set("sceneId", null);
     Meteor.subscribe("frozenScenes");
   },
 
   scene: function (sceneId) {
+    triggerGoogleAnalytics();
     var self = this;
 
     // XXX this method can cause inconsistency between Session and subscription
