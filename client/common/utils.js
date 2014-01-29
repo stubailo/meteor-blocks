@@ -10,5 +10,8 @@ Utils = {
   },
   getScreenshot: function () {
     return $("x3d")[0].runtime.getScreenshot();
+  },
+  linkToScene: function (sceneId) {
+    return Meteor.absoluteUrl("#/scene/" + sceneId);
   }
 };

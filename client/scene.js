@@ -21,13 +21,21 @@ var colors = {
   white:  "#fff",
   silver: "#ddd",
   gray:   "#aaa",
-  black:  "#111"
+  black:  "#111",
+
+  // Browns (for natural scenes)
+  brown1: "#A64300",
+  brown2: "#BF6A30",
+  brown3: "#A66A00"
 };
 
 Template.controls.helpers({
   frozen: Utils.frozen,
   sceneId: function () {
     return Session.get("sceneId");
+  },
+  sceneUrl: function () {
+    return Utils.linkToScene(Session.get("sceneId"));
   },
   createdAt: function () {
     return Utils.currentScene() && moment(Utils.currentScene().createdAt).calendar();
@@ -103,7 +111,18 @@ Template.controls.events({
 Template.scene.helpers({
   // all boxes that were published
   boxes: function () {
-    return Boxes.find();
+    return Boxes.find({"sceneId": Session.get("sceneId")});
+  }
+});
+
+// method stub for faster performance on the frontend
+Meteor.methods({
+  addBoxToScene: function (sceneId, box) {
+    box.sceneId = sceneId;
+    Boxes.insert(box);
+  },
+  removeBoxFromScene: function (sceneId, boxId) {
+    Boxes.remove(boxId);
   }
 });
 
@@ -133,7 +152,8 @@ Template.scene.events({
         Meteor.call("addBoxToScene", Session.get("sceneId"), box);
       } else if (event.button === 4 || event.button === 2) {
         // right click to remove box
-        Boxes.remove(event.currentTarget.id);
+        Meteor.call("removeBoxFromScene",
+          Session.get("sceneId"), event.currentTarget.id);
       }
     }
   }

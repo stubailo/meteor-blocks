@@ -21,6 +21,26 @@ Meteor.methods({
     box.sceneId = sceneId;
     Boxes.insert(box);
   },
+  removeBoxFromScene: function (sceneId, boxId) {
+    check(sceneId, String);
+    check(boxId, String);
+
+    var box = Boxes.findOne(boxId);
+    if (box.sceneId !== sceneId) {
+      throw new Meteor.Error(403, "Box doesn't belong to this scene.");
+    }
+
+    var scene = Scenes.findOne(sceneId);
+    if (!scene) {
+      throw new Meteor.Error(403, "Scene doesn't exist.");
+    }
+
+    if (scene.frozen) {
+      throw new Meteor.Error(403, "Can't add blocks to frozen scene.");
+    }
+
+    Boxes.remove(boxId);
+  },
   clearBoxes: function (sceneId) {
     check(sceneId, String);
     Boxes.remove({sceneId: sceneId});
@@ -70,7 +90,7 @@ Meteor.methods({
               image: screenshot.split(",")[1],
               name: "thumbnail.png",
               title: "Meteor Blocks Thumbnail",
-              description: "Thumbnail for http://3d.meteor.com/#/scene/" + sceneId
+              description: "Thumbnail for " + Utils.linkToScene(sceneId)
             },
             headers: {
               Authorization: "Client-ID " + Config.imgurClientId
