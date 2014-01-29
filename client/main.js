@@ -20,6 +20,9 @@ UI.body.helpers({
   sceneLoaded: function () {
     return !! Session.get("sceneId");
   },
+  loading: function () {
+    return !! Session.get("loading");
+  },
   buildMode: Utils.buildMode
 });
 

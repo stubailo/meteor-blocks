@@ -20,6 +20,8 @@ var RouterClass = Backbone.Router.extend({
     triggerGoogleAnalytics();
     var self = this;
 
+    Session.set("loading", true);
+
     // XXX this method can cause inconsistency between Session and subscription
     // status
     Meteor.subscribe("scenes", sceneId, function () {
@@ -28,6 +30,7 @@ var RouterClass = Backbone.Router.extend({
       if (Scenes.findOne(sceneId)) {
         // we did good, set the ID in the session
         Session.set("sceneId", sceneId);
+        Session.set("loading", false);
 
         if (! Session.get("mode") && ! Utils.currentScene().frozen) {
           // set default mode

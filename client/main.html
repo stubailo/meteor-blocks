@@ -19,10 +19,14 @@
 		</scene>
 	</x3d>
 
-	{{#if sceneLoaded}}
-		{{> controls}}
+	{{#if loading}}
+		<div class="loading">Loading scene data...</div>
 	{{else}}
-		{{> home}}
+		{{#if sceneLoaded}}
+			{{> controls}}
+		{{else}}
+			{{> home}}
+		{{/if}}
 	{{/if}}
 </body>
 
