@@ -29,6 +29,9 @@ x3dom.Viewarea.prototype.callEvtHandler = function (node, eventType, event) {
     x3dom.debug.logException(e);
   }
 
+  if (eventType === "viewpointChanged") {
+    console.log("whatup");
+  }
   var jqEvent = jQuery.Event(eventType, event);
   $(node._xmlNode).trigger(jqEvent);
   return true;

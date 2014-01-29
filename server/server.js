@@ -63,7 +63,7 @@ Meteor.methods({
     }
 
     var scene = Scenes.findOne(sceneId);
-    if (!scene) {
+    if (! scene) {
       throw new Meteor.Error(403, "Scene doesn't exist.");
     }
 
@@ -89,11 +89,19 @@ Meteor.methods({
   cloneScene: function (sceneId) {
     check(sceneId, String);
 
+    var oldScene = Scenes.findOne(sceneId);
+
+    if (! oldScene) {
+      throw new Meteor.Error(403, "Scene doesn't exist.");
+    }
+
+    var dataToCopy = _.pick(oldScene, "backgroundColor", "groundColor");
+
     // make new scene
-    var id = Scenes.insert({
+    var id = Scenes.insert(_.extend(dataToCopy, {
       createdAt: new Date(),
       clonedFrom: sceneId
-    });
+    }));
 
     // get all old boxes
     var boxes = Boxes.find({sceneId: sceneId}).fetch();
@@ -106,12 +114,21 @@ Meteor.methods({
 
     return id;
   },
-  freezeScene: function (sceneId, screenshot) {
+  freezeScene: function (sceneId, screenshot, viewpoint) {
+    check(sceneId, String);
+    check(screenshot, String);
+    check(viewpoint, {
+      orientation: [Number],
+      position: [Number],
+      centerOfRotation: [Number]
+    });
+
     Scenes.update(
       { _id: sceneId },
       { $set:
         {
-          frozen: true
+          frozen: true,
+          viewpoint: viewpoint
         }
       }
     );

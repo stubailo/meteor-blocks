@@ -1,7 +1,8 @@
 <template name="scene">
 	<!-- camera/scene settings -->
-	<viewpoint position="8.19 12.33 19.5"
-		orientation="-0.834 0.55 0 0.65"></viewpoint>
+	<viewpoint position="{{x3dPosition}}"
+		orientation="{{x3dOrientation}}"
+		centerOfRotation="{{x3dCenterOfRotation}}"></viewpoint>
 
 	<!-- turn navigation on and off reactively -->
   <navigationinfo type="{{#if buildMode}}none{{else}}turntable{{/if}}"

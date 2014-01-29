@@ -95,12 +95,13 @@ Template.controls.events({
     Session.set("mode", "build");
   },
   "click button.freeze": function () {
-    Meteor.call("freezeScene", Session.get("sceneId"), Utils.getScreenshot(),
-      function (error) {
-        if (! error) {
-          Session.set("mode", "view");
-        }
-      });
+    Meteor.call("freezeScene", Session.get("sceneId"),
+      Utils.getScreenshot(), Session.get("currentViewpoint"),
+        function (error) {
+          if (! error) {
+            Session.set("mode", "view");
+          }
+        });
   },
   "click button.clone": function () {
     Meteor.call("cloneScene", Session.get("sceneId"), function (error, newId) {
@@ -166,6 +167,34 @@ Template.scene.helpers({
     var colorString = Utils.currentScene().backgroundColor || "#fff";
     var parsed = parseCSSColor(colorString);
     return "" + parsed[0]/255 + " " + parsed[1]/255 + " " + parsed[2]/255;
+  },
+  x3dOrientation: function () {
+    var scene = Utils.currentScene();
+    console.log(scene.viewpoint);
+
+    if (scene && scene.viewpoint && scene.viewpoint.orientation) {
+      return scene.viewpoint.orientation.join(" ");
+    } else {
+      return "-0.834 0.55 0 0.65";
+    }
+  },
+  x3dPosition: function () {
+    var scene = Utils.currentScene();
+
+    if (scene && scene.viewpoint && scene.viewpoint.position) {
+      return scene.viewpoint.position.join(" ");
+    } else {
+      return "8.19 12.33 19.5";
+    }
+  },
+  x3dCenterOfRotation: function () {
+    var scene = Utils.currentScene();
+
+    if (scene && scene.viewpoint && scene.viewpoint.centerOfRotation) {
+      return scene.viewpoint.centerOfRotation.join(" ");
+    } else {
+      return "0 0 0";
+    }
   }
 });
 
@@ -178,13 +207,14 @@ Meteor.methods({
   removeBoxFromScene: function (sceneId, boxId) {
     Boxes.remove(boxId);
   },
-  freezeScene: function (sceneId, screenshot) {
+  freezeScene: function (sceneId, screenshot, viewpoint) {
     Scenes.update(
       { _id: sceneId },
       { $set:
         {
           frozen: true,
-          screenshot: screenshot
+          screenshot: screenshot,
+          viewpoint: viewpoint
         }
       }
     );
@@ -229,5 +259,15 @@ Template.scene.events({
           Session.get("sceneId"), event.currentTarget.id);
       }
     }
+  },
+  "viewpointChanged viewpoint": function (event) {
+    var o = event.orientation;
+    var p = event.position;
+    var c = event.centerOfRotation;
+    Session.set("currentViewpoint", {
+      orientation: [o[0].x, o[0].y, o[0].z, o[1]],
+      position: [p.x, p.y, p.z],
+      centerOfRotation: [c.x, c.y, c.z]
+    });
   }
 });
