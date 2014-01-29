@@ -57,6 +57,10 @@ Template.controls.helpers({
   buildMode: Utils.buildMode,
   screenshot: function () {
     return Utils.currentScene().screenshot;
+  },
+  showFacebookButton: function () {
+    // check for Facebook API
+    return !! FB;
   }
 });
 
@@ -91,20 +95,23 @@ Template.controls.events({
     });
   },
   "click .facebook": function () {
-    var data = {
-      method: "feed",
-      name: "Meteor Blocks",
-      link: Meteor.absoluteUrl("#/scene/" + Session.get("sceneId")),
-      description: "Meteor Blocks is a simple 3D scene editor."
-    };
-    
-    // don't send image if it's a Data URI
-    var screenshot = Utils.currentScene().screenshot;
-    if (screenshot.substring(0, 4) === "http") {
-      data.picture = screenshot;
-    }
+    // check if we have facebook access
+    if (FB) {
+      var data = {
+        method: "feed",
+        name: "Meteor Blocks",
+        link: Meteor.absoluteUrl("#/scene/" + Session.get("sceneId")),
+        description: "Meteor Blocks is a simple 3D scene editor."
+      };
+      
+      // don't send image if it's a Data URI
+      var screenshot = Utils.currentScene().screenshot;
+      if (screenshot.substring(0, 4) === "http") {
+        data.picture = screenshot;
+      }
 
-    FB.ui(data);
+      FB.ui(data);
+    }
   }
 });
 
@@ -123,6 +130,17 @@ Meteor.methods({
   },
   removeBoxFromScene: function (sceneId, boxId) {
     Boxes.remove(boxId);
+  },
+  freezeScene: function (sceneId, screenshot) {
+    Scenes.update(
+      { _id: sceneId },
+      { $set:
+        {
+          frozen: true,
+          screenshot: screenshot
+        }
+      }
+    );
   }
 });
 

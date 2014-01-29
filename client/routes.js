@@ -11,12 +11,14 @@ RouterClass = Backbone.Router.extend({
 
   scene: function (sceneId) {
     var self = this;
-    Session.set("sceneId", sceneId);
 
-    Meteor.subscribe("scenes", Session.get("sceneId"), function () {
+    Meteor.subscribe("scenes", sceneId, function () {
       // when the subscribe completes, check if the ID in the session is
       // a real ID; if it's not reset to the home page
       if (Scenes.findOne(Session.get("sceneId"))) {
+        // we did good, set the ID in the session
+        Session.set("sceneId", sceneId);
+
         if (! Session.get("mode") && ! Utils.currentScene().frozen) {
           // set default mode
           Session.set("mode", "build");

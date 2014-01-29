@@ -73,6 +73,18 @@ Meteor.methods({
     return id;
   },
   freezeScene: function (sceneId, screenshot) {
+    Scenes.update(
+      { _id: sceneId },
+      { $set:
+        {
+          frozen: true
+        }
+      }
+    );
+
+    Meteor.call("uploadScreenshot", sceneId, screenshot);
+  },
+  uploadScreenshot: function (sceneId, screenshot) {
     check(sceneId, String);
     check(screenshot, String);
 
@@ -112,7 +124,6 @@ Meteor.methods({
       { _id: sceneId },
       { $set:
         {
-          frozen: true,
           screenshot: screenshot
         }
       }
