@@ -81,7 +81,7 @@ if (!Array.filter) {
 /*
  * @namespace Namespace container for x3dom objects.
  */
-var x3dom = {
+x3dom = {
     canvases: []
 };
 

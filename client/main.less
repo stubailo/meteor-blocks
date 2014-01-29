@@ -48,6 +48,7 @@ x3d {
 }
 
 x3d.active {
+	background: red;
 	border: none;
 	display: block;
 	position: absolute;
@@ -76,6 +77,10 @@ x3d.active {
 		display: inline-block;
 		cursor: pointer;
 
+		&.white {
+			border-color: #ccc;
+		}
+
 		&:hover {
 			border-color: black;
 		}
@@ -83,6 +88,18 @@ x3d.active {
 		&.active {
 			border-color: black;
 		}
+	}
+
+	.nav-tabs li a {
+		padding: 3px 5px;
+		font-size: 0.9em;
+	}
+
+	.color-picker-content {
+		background: white;
+		padding: 7px 4px 4px 7px;
+		border: 1px solid #ddd;
+		border-top-style: none;
 	}
 }
 

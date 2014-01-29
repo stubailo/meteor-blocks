@@ -51,7 +51,13 @@ Template.controls.helpers({
   },
   // active color helper for color picker
   activeColor: function () {
-    return this.name === Session.get("color");
+    if (Session.equals("colorPickerTab", "ground")) {
+      return colors[this.name] === Utils.currentScene().groundColor;
+    } else if (Session.equals("colorPickerTab", "background")) {
+      return colors[this.name] === Utils.currentScene().backgroundColor;
+    } else {
+      return this.name === Session.get("color");
+    }
   },
   // see if we are in build mode
   buildMode: Utils.buildMode,
@@ -61,6 +67,9 @@ Template.controls.helpers({
   showFacebookButton: function () {
     // check for Facebook API
     return !! FB;
+  },
+  colorPickerTabIs: function (tabName) {
+    return (Session.get("colorPickerTab") || "block") === tabName;
   }
 });
 
@@ -70,7 +79,14 @@ Template.controls.events({
     Meteor.call("clearBoxes", Session.get("sceneId"));
   },
   "click .swatch": function () {
-    Session.set("color", this.name);
+    var sceneId = Session.get("sceneId");
+    if (Session.equals("colorPickerTab", "ground")) {
+      Meteor.call("setSceneGroundColor", sceneId, colors[this.name]);
+    } else if (Session.equals("colorPickerTab", "background")) {
+      Meteor.call("setSceneBackgroundColor", sceneId, colors[this.name]);
+    } else {
+      Session.set("color", this.name);
+    }
   },
   "click button.view-mode": function () {
     Session.set("mode", "view");
@@ -93,6 +109,11 @@ Template.controls.events({
         Session.set("mode", "build");
       }
     });
+  },
+  "click .color-picker .nav-tabs a": function (event) {
+    event.preventDefault();
+    var tabName = event.target.getAttribute("data-tab-name");
+    Session.set("colorPickerTab", tabName);
   },
   "click .facebook": function () {
     // check if we have facebook access
@@ -129,6 +150,22 @@ Template.scene.helpers({
   // all boxes that were published
   boxes: function () {
     return Boxes.find({"sceneId": Session.get("sceneId")});
+  },
+  groundColor: function () {
+    // take into account old scenes with no ground color
+    return Utils.currentScene().groundColor || "#4A9";
+  },
+  x3dGroundColor: function () {
+    // take into account old scenes with no background color
+    var colorString = Utils.currentScene().groundColor || "#4A9";
+    var parsed = parseCSSColor(colorString);
+    return "" + parsed[0]/255 + " " + parsed[1]/255 + " " + parsed[2]/255;
+  },
+  x3dBackgroundColor: function () {
+    // take into account old scenes with no background color
+    var colorString = Utils.currentScene().backgroundColor || "#fff";
+    var parsed = parseCSSColor(colorString);
+    return "" + parsed[0]/255 + " " + parsed[1]/255 + " " + parsed[2]/255;
   }
 });
 
@@ -151,6 +188,14 @@ Meteor.methods({
         }
       }
     );
+  },
+  setSceneGroundColor: function (sceneId, color) {
+    Scenes.update({_id: sceneId},
+    { $set: { groundColor: color } });
+  },
+  setSceneBackgroundColor: function (sceneId, color) {
+    Scenes.update({_id: sceneId},
+    { $set: { backgroundColor: color } });
   }
 });
 

@@ -1,5 +1,37 @@
 // it's not possible to remove all without making a method
 Meteor.methods({
+  setSceneGroundColor: function (sceneId, color) {
+    check(sceneId, String);
+    check(color, String);
+
+    var scene = Scenes.findOne(sceneId);
+    if (!scene) {
+      throw new Meteor.Error(403, "Scene doesn't exist.");
+    }
+
+    if (scene.frozen) {
+      throw new Meteor.Error(403, "Can't add blocks to frozen scene.");
+    }
+
+    Scenes.update({_id: sceneId},
+    { $set: { groundColor: color } });
+  },
+  setSceneBackgroundColor: function (sceneId, color) {
+    check(sceneId, String);
+    check(color, String);
+
+    var scene = Scenes.findOne(sceneId);
+    if (!scene) {
+      throw new Meteor.Error(403, "Scene doesn't exist.");
+    }
+
+    if (scene.frozen) {
+      throw new Meteor.Error(403, "Can't add blocks to frozen scene.");
+    }
+
+    Scenes.update({_id: sceneId},
+    { $set: { backgroundColor: color } });
+  },
   addBoxToScene: function (sceneId, box) {
     check(sceneId, String);
     check(box, {
@@ -47,7 +79,9 @@ Meteor.methods({
   },
   newScene: function () {
     var id = Scenes.insert({
-      createdAt: new Date()
+      createdAt: new Date(),
+      backgroundColor: "#fff",
+      groundColor: "#eee"
     });
 
     return id;

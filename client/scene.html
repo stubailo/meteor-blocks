@@ -19,11 +19,13 @@
   	<shape>
   		<appearance>
   			<!-- XXX could be improved to a grass texture -->
-	  		<material diffuseColor="#4A9"></material>
+	  		<material diffuseColor="{{groundColor}}"></material>
 	  	</appearance>
 	  	<plane size="20 20"></plane>
 	  </shape>
 	</transform>
+
+	<background skyColor="{{x3dBackgroundColor}}"></background>
 
 	<!-- boxes -->
 	{{#each boxes}}
@@ -83,10 +85,21 @@
 
 			<div class="color-picker">
 				<h2>Color picker</h2>
-				{{#each colors}}
-					<div class="swatch{{#if activeColor}} active{{/if}}" style="background-color: {{code}}">
-					</div>
-				{{/each}}
+				<ul class="nav nav-tabs">
+					<li class="{{#if colorPickerTabIs 'block'}}active{{/if}}">
+						<a href="#" data-tab-name="block">Block</a></li>
+					<li class="{{#if colorPickerTabIs 'ground'}}active{{/if}}">
+						<a href="#" data-tab-name="ground">Ground</a></li>
+					<li class="{{#if colorPickerTabIs 'background'}}active{{/if}}">
+						<a href="#" data-tab-name="background">Background</a></li>
+				</ul>
+				<div class="color-picker-content">
+					{{#each colors}}
+						<div class="swatch{{#if activeColor}} active{{/if}}
+							{{name}}" style="background-color: {{code}}">
+						</div>
+					{{/each}}
+				</div>
 			</div>
 		{{else}}
 			<h2>Camera Controls</h2>
