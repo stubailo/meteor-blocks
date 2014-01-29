@@ -99,7 +99,11 @@
 		
 		{{#if frozen}}
 			<h2>Share</h2>
-			<p><img src="{{screenshot}}" class="screenshot" /></p>
+			<p>
+				{{#if screenshot}}
+					<img src="{{screenshot}}" class="screenshot" />
+				{{/if}}
+			</p>
 			<button class='btn btn-primary btn-sm facebook'>Share on Facebook</button>
 		{{else}}
 			<h2>Collaborate</h2>
