@@ -1,0 +1,62 @@
+<head>
+  <title>Meteor Blocks</title>
+</head>
+
+<body>
+	<!-- facebook API for sharing -->
+	<div id="fb-root"></div>
+
+	<!-- super fun 3D stuff! -->
+	<!-- X3DOM doesn't handle this element getting rerendered very well so
+		we keep it on the page always but hide it if the "active" class
+		is not present -->
+	<x3d class="{{#if buildMode}}build{{/if}} {{#if sceneLoaded}}active{{/if}}">
+		<scene>
+			{{#if sceneLoaded}}
+				{{> scene}}
+			{{/if}}
+		</scene>
+	</x3d>
+
+	{{#if sceneLoaded}}
+		{{> controls}}
+	{{else}}
+		{{> home}}
+	{{/if}}
+</body>
+
+<template name="home">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<h1>Meteor Blocks</h1>
+				<p>The friendliest collaborative 3D pixel editor</p>
+				<button class="btn btn-primary btn-lg new-scene">Build a Scene!</button>
+
+				<hr />
+				<h3>How does it work?</h3>
+				<p>Meteor Blocks uses the <a href="http://meteor.com">Meteor</a> web
+					framework and <a href="http://www.x3dom.org/">X3DOM</a> together
+					to create a realtime-collaborative 3D scene.</p>
+				<p>
+					<a href="http://git.io/meteor3d">
+						Check out the source code on GitHub</a>
+				</p>
+			</div>
+			<div class="col-md-8">
+				<h2>Recent Creations</h2>
+				<p>Click on a preview to see it in 3D.
+					Then clone your own version and edit it!</p>
+				{{#each scenes}}
+					{{#if screenshot}}
+						<a href="#/scene/{{_id}}" class="preview">
+							<div class="image"
+								style="background-image: url({{screenshot}})"></div>
+							<div class="time">{{calendar createdAt}}</div>
+						</a>
+					{{/if}}
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</template>

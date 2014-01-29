@@ -1,12 +1,16 @@
-.ui {
+.controls {
 	background: #eee;
-	border-radius: 5px;
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: 0;
+	left: 0;
+	bottom: 0;
 	z-index: 10;
 
-	border: 1px #ccc solid;
+	width: 220px;
+
+	overflow-y: auto;
+
+	border-right: 1px #ccc solid;
 	padding: 10px;
 
 	h1 {
@@ -25,7 +29,6 @@
 	}
 
 	.subtitle {
-		font-size: 0.9;
 		color: #555;
 		margin-top: -5px;
 	}
@@ -35,26 +38,26 @@
 		padding-top: 10px;
 	}
 
-	.btn {
-		padding: 4px 8px;
+	.screenshot {
+		width: 150px;
 		background: white;
-		border: 1px solid #ccc;
-		border-radius: 3px;
-
-		&.active {
-			border-color: black;
-			background-color: white;
-			font-weight: bold;
-		}
 	}
 }
 
 x3d {
+	display: none;
+}
+
+x3d.active {
+	border: none;
+	display: block;
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: 200px;
 	right: 0;
 	bottom: 0;
+
+	z-index: -1;
 
 	cursor: move;
 	
@@ -64,14 +67,11 @@ x3d {
 }
 
 .color-picker {
-	max-width: 150px;
-
 	.swatch {
-		width: 40px;
-		height: 40px;
+		width: 20px;
+		height: 20px;
 		color: white;
-		padding: 5px;
-		margin: 0 5px 5px 0;
+		margin: 0 3px 3px 0;
 		border: 2px solid transparent;
 
 		display: inline-block;
@@ -85,4 +85,25 @@ x3d {
 			border-color: black;
 		}
 	}
+}
+
+.preview {
+	.image {
+		height: 200px;
+		width: 200px;
+		background-size: cover;
+		background-position: center;
+	}
+
+	.time {
+		text-align: center;
+		padding: 3px;
+		color: black;
+	}
+
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	display: inline-block;
+
+	margin: 0 10px 10px 0;
 }
