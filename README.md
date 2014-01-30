@@ -3,6 +3,8 @@ Meteor Blocks Voxel Editor
 
 [See the demo at 3d.meteor.com!](http://3d.meteor.com/)
 
+![Screenshot](http://i.imgur.com/H0i5X4i.png)
+
 ### What is this?
 Meteor Blocks is a demonstration of 3D rendering in response to changes in a database. Using normal Meteor templates and a DOM-to-3D library, we can make a collaborative 3D scene editor with a surprisingly small amount of code.
 
