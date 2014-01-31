@@ -8,4 +8,8 @@ if (Meteor.isServer) {
     y: 1,
     z: 1
   }, {unique: true});
+
+  Boxes._ensureIndex({
+    sceneId: 1
+  });
 }
