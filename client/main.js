@@ -13,6 +13,15 @@ Template.home.events({
     Meteor.call("newScene", function (error, newId) {
       Router.navigate("/scene/" + newId, { trigger: true });
     });
+  },
+  "click .clone": function () {
+    Session.set("loading", true);
+    Meteor.call("cloneScene", this._id, function (error, newId) {
+      if (newId) {
+        Router.navigate("/scene/" + newId, { trigger: true });
+        Session.set("mode", "build");
+      }
+    });
   }
 });
 

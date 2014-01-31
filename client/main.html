@@ -67,10 +67,22 @@
 
 				{{#each scenes}}
 					{{#if screenshot}}
-						<a href="#/scene/{{_id}}" class="preview">
+						<a href="#/scene/{{_id}}" class="preview thumbnail">
+							<div class="time">{{calendar createdAt}}</div>
 							<div class="image"
 								style="background-image: url({{screenshot}})"></div>
-							<div class="time">{{calendar createdAt}}</div>
+							<div class="actions">
+								<div class="btn-group">
+									<button class="btn btn-default btn-xs">
+										<span class="glyphicon glyphicon-folder-open"></span>
+										Open
+									</button>
+									<button class="btn btn-default btn-xs clone">
+										<span class="glyphicon glyphicon-pencil"></span>
+										Clone
+									</button>
+								</div>
+							</div>
 						</a>
 					{{/if}}
 				{{/each}}
