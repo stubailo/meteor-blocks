@@ -1,12 +1,9 @@
 <body>
 	<div class="controls">
-		<div class="color-picker">
-			{{#each colors}}
-				<div class="swatch{{#if activeColor}} active{{/if}}"
-					style="background-color: {{this}}"></div>
-			{{/each}}
-		</div>
-		<button class="clear-boxes">Clear all blocks</button>
+		{{#each colors}}
+			<div class="swatch{{#if activeColor}} active{{/if}}"
+				style="background-color: {{this}}"></div>
+		{{/each}}
 	</div>
 
   <x3d>
@@ -14,7 +11,8 @@
 	  	<!-- camera/scene settings -->
 	  	<viewpoint position="8.19 12.33 19.5"
 	  		orientation="-0.834 0.55 0 0.65"></viewpoint>
-      <navigationinfo type="turntable" headlight="false"></navigationinfo>
+      <navigationinfo type="turntable" headlight="false">
+      	</navigationinfo>
 	  	
 	  	<!-- lights -->
 	  	<pointLight location="0 40 0" intensity="0.3"></pointLight>
@@ -23,20 +21,21 @@
 	  		intensity="0.8" shadowIntensity="0.4"></directionalLight>
 	  	
 	  	<!-- ground -->
-	  	<transform rotation="-1.5707963267948966 0 0 1.5707963267948966">
+	  	<transform rotation="-1.5707 0 0 1.5707">
 		  	<shape>
-		  		<appearance><material diffuseColor="#4A9"></material></appearance>
+		  		<appearance><material diffuseColor="#4A9"></material>
+		  			</appearance>
 			  	<plane size="20 20"></plane>
 			  </shape>
 			</transform>
 
 			<!-- boxes -->
 	  	{{#each boxes}}
-	  		<!-- scale 0.5 because default size of box is 2 units on a side -->
-	  		<transform translation="{{x}} {{y}} {{z}}" scale="0.5 0.5 0.5">
+	  		<!-- scale 0.5 because default size of box is 2 units -->
+	  		<transform translation="{{x}} {{y}} {{z}}" scale=".5 .5 .5">
 			    <shape id="{{_id}}">
 			      <appearance>
-			        <material diffuseColor="{{color}}" ambientIntensity="0.1"
+			        <material diffuseColor="{{color}}" ambientIntensity=".1"
 			        	shininess="0"></material>
 			      </appearance>
 			      <box></box>

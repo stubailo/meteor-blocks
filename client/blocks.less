@@ -12,26 +12,16 @@ x3d {
 	bottom: 0;
 }
 
-.color-picker {
-	max-width: 150px;
+.swatch {
+	width: 40px;
+	height: 40px;
+	margin: 0 5px 5px 0;
+	border: 2px solid transparent;
 
-	.swatch {
-		width: 40px;
-		height: 40px;
-		color: white;
-		padding: 5px;
-		margin: 0 5px 5px 0;
-		border: 2px solid transparent;
+	display: inline-block;
+	cursor: pointer;
 
-		display: inline-block;
-		cursor: pointer;
-
-		&:hover {
-			border-color: black;
-		}
-
-		&.active {
-			border-color: black;
-		}
+	&.active {
+		border-color: black;
 	}
 }
