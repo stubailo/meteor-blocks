@@ -1,46 +1,15 @@
-<head>
-  <title>Meteor Blocks</title>
-</head>
-
 <body>
-	<!-- floating UI box -->
-	<div class="ui">
-		<h1>Meteor Blocks</h1>
-		<p class="subtitle">Made with X3DOM</p>
-
-		<h2>Mode</h2>
-		<button class="view-mode btn {{#unless buildMode}}active{{/unless}}">
-			Rotate View</button>
-		<button class="build-mode btn {{#if buildMode}}active{{/if}}">
-			Build</button>
-
-		{{#if buildMode}}
-			<h2>Tools</h2>
-			<p>Click to place a block</p>
-			<p>Right-click to delete one</p>
-			<button class="clear-boxes btn">Clear all blocks</button>
-
-			<div class="color-picker">
-				<h2>Color picker</h2>
-				{{#each colors}}
-					<div class="swatch{{#if activeColor}} active{{/if}}" style="background-color: {{code}}">
-						{{name}}
-					</div>
-				{{/each}}
-			</div>
-		{{else}}
-			<p>Drag to rotate view</p>
-			<p>Double-click to center<br />on a block</p>
-			<p>Scroll to zoom</p>
-		{{/if}}
-
-		<div class="github-link">
-			<a href="http://git.io/meteor3d">See the code on GitHub</a>
+	<div class="controls">
+		<div class="color-picker">
+			{{#each colors}}
+				<div class="swatch{{#if activeColor}} active{{/if}}"
+					style="background-color: {{this}}"></div>
+			{{/each}}
 		</div>
+		<button class="clear-boxes">Clear all blocks</button>
 	</div>
 
-	<!-- super fun 3D stuff! -->
-  <x3d class="{{#if buildMode}}build{{/if}}">
+  <x3d>
 	  <scene>
 	  	<!-- camera/scene settings -->
 	  	<viewpoint position="8.19 12.33 19.5"
@@ -56,10 +25,7 @@
 	  	<!-- ground -->
 	  	<transform rotation="-1.5707963267948966 0 0 1.5707963267948966">
 		  	<shape>
-		  		<appearance>
-		  			<!-- XXX could be improved to a grass texture -->
-			  		<material diffuseColor="#4A9"></material>
-			  	</appearance>
+		  		<appearance><material diffuseColor="#4A9"></material></appearance>
 			  	<plane size="20 20"></plane>
 			  </shape>
 			</transform>
@@ -70,7 +36,6 @@
 	  		<transform translation="{{x}} {{y}} {{z}}" scale="0.5 0.5 0.5">
 			    <shape id="{{_id}}">
 			      <appearance>
-			      	<!-- could be improved to have texture and not just color -->
 			        <material diffuseColor="{{color}}" ambientIntensity="0.1"
 			        	shininess="0"></material>
 			      </appearance>

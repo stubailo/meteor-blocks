@@ -1,44 +1,22 @@
-// each color has a list so that we have a little variation
-var colors = {
-  brown: ["#c2892b", "#af7c27", "#b57813"],
-  red: ["#e91d45", "#e91d22", "#e60f3d"],
-  green: ["#30d02c", "#26bf22", "#30c12d"],
-  blue: ["#1d57e9", "#194dd1", "#1d68d9"],
-  purple: ["#9414c9"],
-  yellow: ["#fee619"]
-};
+Session.set("color", "#c2892b");
 
-// set initial color
-Session.set("color", "brown");
-
-// set initial mode to view
-Session.set("mode", "view");
-
-// this uses the Shark branch of Meteor, hence the UI namespace
 UI.body.helpers({
-  // all boxes in collection
-  // XXX should at some point be scoped to user
   boxes: function () {
     return Boxes.find();
   },
-  // list of colors for color picker
   colors: function () {
-    return _.map(_.keys(colors), function (name) {
-      return {
-        name: name,
-        code: colors[name][0]
-      };
-    });
+    return ["#c2892b", "#e91d45", "#30d02c", "#1d57e9", "#9414c9", "#fee619"];
   },
-  // active color helper for color picker
   activeColor: function () {
-    return this.name === Session.get("color");
-  },
-  // see if we are in build mode
-  buildMode: function () {
-    return Session.equals("mode", "build");
+    return this.valueOf() === Session.get("color");
   }
 });
+
+var lastMousePosition;
+var mouseMoved = function (event) {
+  return Math.abs(event.layerX - lastMousePosition.x) > 5 ||
+    Math.abs(event.layerY - lastMousePosition.y) > 5;
+};
 
 // events on the dialog with lots of buttons
 UI.body.events({
@@ -46,37 +24,29 @@ UI.body.events({
     Meteor.call("clearBoxes");
   },
   "click .swatch": function () {
-    Session.set("color", this.name);
+    Session.set("color", this.valueOf());
   },
-  "click button.view-mode": function (event, template) {
-    Session.set("mode", "view");
-    template.find("x3d").runtime.turnTable();
+  "mousedown x3d": function (event) {
+    if (event.layerX) {
+      lastMousePosition = {
+        x: event.layerX,
+        y: event.layerY
+      };
+    }
   },
-  "click button.build-mode": function (event, template) {
-    Session.set("mode", "build");
-    template.find("x3d").runtime.noNav();
-  },
-  "mousedown shape": function (event) {
-    if (Session.get("mode") === "build") {
-      if (event.button === 1) {
-        // left click to add box
-
-        // calculate new box position based on location of click event
-        // in 3d space and the normal of the surface that was clicked
-        var x = Math.floor(event.worldX + event.normalX / 2) + 0.5,
-          y = Math.floor(event.worldY + event.normalY / 2) + 0.5,
-          z = Math.floor(event.worldZ + event.normalZ / 2) + 0.5;
-
-        Boxes.insert({
-          color: Random.choice(colors[Session.get("color")]),
-          x: x,
-          y: y,
-          z: z
-        });
-      } else if (event.button === 4 || event.button === 2) {
-        // right click to remove box
-        Boxes.remove(event.currentTarget.id);
-      }
+  "mouseup shape": function (event) {
+    if (! mouseMoved(event) && event.button === 1) {
+      // calculate new box position from event
+      Boxes.insert({
+        color: Session.get("color"),
+        x: Math.floor(event.worldX + event.normalX / 2) + 0.5,
+        y: Math.floor(event.worldY + event.normalY / 2) + 0.5,
+        z: Math.floor(event.worldZ + event.normalZ / 2) + 0.5
+      });
+    } else if (! mouseMoved(event) &&
+      (event.button === 4 || event.button === 2)) {
+      // right click to remove box
+      Boxes.remove(event.currentTarget.id);
     }
   }
 });
