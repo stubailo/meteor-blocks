@@ -1,5 +1,5 @@
 // colors from https://github.com/mrmrs/colors/blob/master/less/_variables.less
-var colors = {
+var colors = _.values({
   // Cool
   aqua: "#7FDBFF",
   blue: "#0074D9",
@@ -27,7 +27,7 @@ var colors = {
   brown1: "#A64300",
   brown2: "#BF6A30",
   brown3: "#A66A00"
-};
+});
 
 Template.controls.helpers({
   frozen: Utils.frozen,
@@ -41,22 +41,15 @@ Template.controls.helpers({
     return Utils.currentScene() && moment(Utils.currentScene().createdAt).calendar();
   },
   // list of colors for color picker
-  colors: function () {
-    return _.map(_.keys(colors), function (name) {
-      return {
-        name: name,
-        code: colors[name]
-      };
-    });
-  },
+  colors: colors,
   // active color helper for color picker
   activeColor: function () {
     if (Session.equals("colorPickerTab", "ground")) {
-      return colors[this.name] === Utils.currentScene().groundColor;
+      return this.valueOf() === Utils.currentScene().groundColor;
     } else if (Session.equals("colorPickerTab", "background")) {
-      return colors[this.name] === Utils.currentScene().backgroundColor;
+      return this.valueOf() === Utils.currentScene().backgroundColor;
     } else {
-      return this.name === Session.get("color");
+      return this.valueOf() === Session.get("color");
     }
   },
   // see if we are in build mode
@@ -81,11 +74,11 @@ Template.controls.events({
   "click .swatch": function () {
     var sceneId = Session.get("sceneId");
     if (Session.equals("colorPickerTab", "ground")) {
-      Meteor.call("setSceneGroundColor", sceneId, colors[this.name]);
+      Meteor.call("setSceneGroundColor", sceneId, this.valueOf());
     } else if (Session.equals("colorPickerTab", "background")) {
-      Meteor.call("setSceneBackgroundColor", sceneId, colors[this.name]);
+      Meteor.call("setSceneBackgroundColor", sceneId, this.valueOf());
     } else {
-      Session.set("color", this.name);
+      Session.set("color", this.valueOf());
     }
   },
   "click button.view-mode": function () {
@@ -209,22 +202,17 @@ Template.scene.events({
     if (Utils.buildMode()) {
       if (event.button === 1) {
         // left click to add box
-
-        // calculate new box position based on location of click event
-        // in 3d space and the normal of the surface that was clicked
-        var x = Math.floor(event.worldX + event.normalX / 2) + 0.5,
-          y = Math.floor(event.worldY + event.normalY / 2) + 0.5,
-          z = Math.floor(event.worldZ + event.normalZ / 2) + 0.5;
-
         if (! colors.hasOwnProperty(Session.get("color"))) {
           Session.set("color", _.keys(colors)[0]);
         }
 
+        // calculate new box position based on location of click event
+        // in 3d space and the normal of the surface that was clicked
         var box = {
-          color: colors[Session.get("color")],
-          x: x,
-          y: y,
-          z: z
+          color: Session.get("color"),
+          x: Math.floor(event.worldX + event.normalX / 2) + 0.5,
+          y: Math.floor(event.worldY + event.normalY / 2) + 0.5,
+          z: Math.floor(event.worldZ + event.normalZ / 2) + 0.5
         };
 
         Meteor.call("addBoxToScene", Session.get("sceneId"), box);
