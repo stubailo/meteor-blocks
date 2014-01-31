@@ -14,7 +14,8 @@ Template.home.events({
       Router.navigate("/scene/" + newId, { trigger: true });
     });
   },
-  "click .clone": function () {
+  "click .clone": function (event) {
+    event.preventDefault();
     Session.set("loading", true);
     Meteor.call("cloneScene", this._id, function (error, newId) {
       if (newId) {
@@ -22,6 +23,10 @@ Template.home.events({
         Session.set("mode", "build");
       }
     });
+  },
+  "click .share": function (event) {
+    event.preventDefault();
+    shareOnFacebook(this._id);
   }
 });
 
