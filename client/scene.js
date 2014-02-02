@@ -29,6 +29,8 @@ var colors = _.values({
   brown3: "#A66A00"
 });
 
+Session.setDefault("color", "#7FDBFF");
+
 Template.controls.helpers({
   frozen: Utils.frozen,
   sceneId: function () {
@@ -52,8 +54,6 @@ Template.controls.helpers({
       return this.valueOf() === Session.get("color");
     }
   },
-  // see if we are in build mode
-  buildMode: Utils.buildMode,
   screenshot: function () {
     return Utils.currentScene().screenshot;
   },
@@ -81,27 +81,28 @@ Template.controls.events({
       Session.set("color", this.valueOf());
     }
   },
-  "click button.view-mode": function () {
-    Session.set("mode", "view");
-  },
-  "click button.build-mode": function () {
-    Session.set("mode", "build");
-  },
   "click button.freeze": function () {
+    savedViewpoint = Session.set("currentViewpoint");
+
+    var o = savedViewpoint.orientation;
+    var p = savedViewpoint.position;
+    var c = savedViewpoint.centerOfRotation;
+
+    viewpoint = {
+      orientation: [o[0].x, o[0].y, o[0].z, o[1]],
+      position: [p.x, p.y, p.z],
+      centerOfRotation: [c.x, c.y, c.z]
+    };
+
     Meteor.call("freezeScene", Session.get("sceneId"),
-      Utils.getScreenshot(), Session.get("currentViewpoint"),
-        function (error) {
-          if (! error) {
-            Session.set("mode", "view");
-          }
-        });
+      Utils.getScreenshot(), viewpoint);
   },
+  // XXX add more loading indicators
   "click button.clone": function () {
     Session.set("loading", true);
     Meteor.call("cloneScene", Session.get("sceneId"), function (error, newId) {
       if (newId) {
         Router.navigate("/scene/" + newId, { trigger: true });
-        Session.set("mode", "build");
       }
     });
   },
@@ -116,7 +117,6 @@ Template.controls.events({
 });
 
 Template.scene.helpers({
-  // all boxes that were published
   boxes: function () {
     return Boxes.find({"sceneId": Session.get("sceneId")});
   },
@@ -138,7 +138,6 @@ Template.scene.helpers({
   },
   x3dOrientation: function () {
     var scene = Utils.currentScene();
-    console.log(scene.viewpoint);
 
     if (scene && scene.viewpoint && scene.viewpoint.orientation) {
       return scene.viewpoint.orientation.join(" ");
@@ -197,40 +196,40 @@ Meteor.methods({
   }
 });
 
+// how many pixels has the mouse been dragged since last mousedown
+// used to determine if we should place a block or not
+var dragged = 0;
+
+UI.body.events({
+  "mousedown x3d": function () {
+    dragged = 0;
+  },
+  "mousemove x3d": function () {
+    dragged += 1;
+  },
+});
+
 Template.scene.events({
-  "mousedown shape": function (event) {
-    if (Utils.buildMode()) {
-      if (event.button === 1) {
-        // left click to add box
-        if (! colors.hasOwnProperty(Session.get("color"))) {
-          Session.set("color", _.keys(colors)[0]);
-        }
+  "mouseup shape": function (event) {
+    if (dragged < 5 && event.button === 1) {
+      // calculate new box position based on location of click event
+      // in 3d space and the normal of the surface that was clicked
+      var box = {
+        color: Session.get("color"),
+        x: Math.floor(event.worldX + event.normalX / 2) + 0.5,
+        y: Math.floor(event.worldY + event.normalY / 2) + 0.5,
+        z: Math.floor(event.worldZ + event.normalZ / 2) + 0.5
+      };
 
-        // calculate new box position based on location of click event
-        // in 3d space and the normal of the surface that was clicked
-        var box = {
-          color: Session.get("color"),
-          x: Math.floor(event.worldX + event.normalX / 2) + 0.5,
-          y: Math.floor(event.worldY + event.normalY / 2) + 0.5,
-          z: Math.floor(event.worldZ + event.normalZ / 2) + 0.5
-        };
-
-        Meteor.call("addBoxToScene", Session.get("sceneId"), box);
-      } else if (event.button === 4 || event.button === 2) {
-        // right click to remove box
-        Meteor.call("removeBoxFromScene",
-          Session.get("sceneId"), event.currentTarget.id);
-      }
+      Meteor.call("addBoxToScene", Session.get("sceneId"), box);
+    } else if (dragged < 5 && event.button === 4 || event.button === 2) {
+      // right click to remove box
+      Meteor.call("removeBoxFromScene",
+        Session.get("sceneId"), event.currentTarget.id);
     }
   },
   "viewpointChanged viewpoint": function (event) {
-    var o = event.orientation;
-    var p = event.position;
-    var c = event.centerOfRotation;
-    Session.set("currentViewpoint", {
-      orientation: [o[0].x, o[0].y, o[0].z, o[1]],
-      position: [p.x, p.y, p.z],
-      centerOfRotation: [c.x, c.y, c.z]
-    });
+    Session.set("currentViewpoint", _.pick(event,
+      ["orientation", "position", "centerOfRotation"]));
   }
 });

@@ -5,7 +5,7 @@
 		centerOfRotation="{{x3dCenterOfRotation}}"></viewpoint>
 
 	<!-- turn navigation on and off reactively -->
-  <navigationinfo type="{{#if buildMode}}none{{else}}turntable{{/if}}"
+  <navigationinfo type="turntable"
   headlight="false"></navigationinfo>
 	
 	<!-- lights -->
@@ -56,18 +56,6 @@
 		<h2>Scene ID</h2>
 		<p><a href="{{sceneUrl}}">{{sceneId}}</a></p>
 
-		{{#unless frozen}}
-			<h2>Mode</h2>
-			<p>
-				<button class="view-mode btn btn-sm
-					{{#if buildMode}}btn-default{{else}}btn-primary{{/if}}">
-					View</button>
-				<button class="build-mode btn btn-sm
-					{{#if buildMode}}btn-primary{{else}}btn-default{{/if}}">
-					Build</button>
-			</p>
-		{{/unless}}
-
 		{{#if frozen}}
 			<h2>Make Your Own</h2>
 			<p>
@@ -75,42 +63,35 @@
 			</p>
 		{{/if}}
 
-		{{#if buildMode}}
-			<h2>Build Controls</h2>
-			<p>
-				Click to place a block <br />
-				Right-click to delete one
-			</p>
-			<button class="clear-boxes btn btn-sm btn-default">
-				Clear all blocks</button>
+		<h2>Controls</h2>
+		<p>
+			Click to place a block <br />
+			Right-click to delete one <br />
+			Drag to rotate view <br />
+			Scroll to zoom
+		</p>
+		<button class="clear-boxes btn btn-sm btn-default">
+			Clear all blocks</button>
 
-			<div class="color-picker">
-				<h2>Color picker</h2>
-				<ul class="nav nav-tabs">
-					<li class="{{#if colorPickerTabIs 'block'}}active{{/if}}">
-						<a href="#" data-tab-name="block">Block</a></li>
-					<li class="{{#if colorPickerTabIs 'ground'}}active{{/if}}">
-						<a href="#" data-tab-name="ground">Ground</a></li>
-					<li class="{{#if colorPickerTabIs 'background'}}active{{/if}}">
-						<a href="#" data-tab-name="background">Background</a></li>
-				</ul>
-				<div class="color-picker-content">
-					{{#each colors}}
-						<div class="swatch{{#if activeColor}} active{{/if}}"
-							style="background-color: {{code}}">
-						</div>
-					{{/each}}
-				</div>
+		<div class="color-picker">
+			<h2>Color picker</h2>
+			<ul class="nav nav-tabs">
+				<li class="{{#if colorPickerTabIs 'block'}}active{{/if}}">
+					<a href="#" data-tab-name="block">Block</a></li>
+				<li class="{{#if colorPickerTabIs 'ground'}}active{{/if}}">
+					<a href="#" data-tab-name="ground">Ground</a></li>
+				<li class="{{#if colorPickerTabIs 'background'}}active{{/if}}">
+					<a href="#" data-tab-name="background">Background</a></li>
+			</ul>
+			<div class="color-picker-content">
+				{{#each colors}}
+					<div class="swatch{{#if activeColor}} active{{/if}}"
+						style="background-color: {{this}}">
+					</div>
+				{{/each}}
 			</div>
-		{{else}}
-			<h2>Camera Controls</h2>
-			<p>
-				Drag to rotate view <br />
-				Scroll to zoom
-			</p>
-		{{/if}}
+		</div>
 
-		
 		{{#if frozen}}
 			<h2>Share</h2>
 			<p>
