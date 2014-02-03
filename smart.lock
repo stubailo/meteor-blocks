@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "x3dom": {}
+    },
+    "packages": {
+      "x3dom": {
+        "git": "https://github.com/stubailo/meteor-x3dom.git",
+        "tag": "v0.0.1",
+        "commit": "2c8eaec9d6c0a1f6c8f80eac5141ed0adb24b349"
+      }
+    }
+  }
+}
