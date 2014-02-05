@@ -65,11 +65,15 @@
 
 		<h2>Controls</h2>
 		<p>
-			Click to place a block <br />
-			Right-click to delete one <br />
+			{{#unless frozen}}
+				Click to place a block <br />
+				Right-click to delete one <br />
+			{{/unless}}
 			Drag to rotate view <br />
 			Scroll to zoom
 		</p>
+
+		{{#unless frozen}}
 		<button class="clear-boxes btn btn-sm btn-default">
 			Clear all blocks</button>
 
@@ -91,6 +95,7 @@
 				{{/each}}
 			</div>
 		</div>
+		{{/unless}}
 
 		{{#if frozen}}
 			<h2>Share</h2>
