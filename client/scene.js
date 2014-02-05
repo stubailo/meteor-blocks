@@ -211,21 +211,23 @@ UI.body.events({
 
 Template.scene.events({
   "mouseup shape": function (event) {
-    if (dragged < 5 && event.button === 1) {
-      // calculate new box position based on location of click event
-      // in 3d space and the normal of the surface that was clicked
-      var box = {
-        color: Session.get("color"),
-        x: Math.floor(event.worldX + event.normalX / 2) + 0.5,
-        y: Math.floor(event.worldY + event.normalY / 2) + 0.5,
-        z: Math.floor(event.worldZ + event.normalZ / 2) + 0.5
-      };
+    if (!Utils.frozen() && dragged < 5) {
+      if (event.button === 1) {
+        // calculate new box position based on location of click event
+        // in 3d space and the normal of the surface that was clicked
+        var box = {
+          color: Session.get("color"),
+          x: Math.floor(event.worldX + event.normalX / 2) + 0.5,
+          y: Math.floor(event.worldY + event.normalY / 2) + 0.5,
+          z: Math.floor(event.worldZ + event.normalZ / 2) + 0.5
+        };
 
-      Meteor.call("addBoxToScene", Session.get("sceneId"), box);
-    } else if (dragged < 5 && event.button === 4 || event.button === 2) {
-      // right click to remove box
-      Meteor.call("removeBoxFromScene",
-        Session.get("sceneId"), event.currentTarget.id);
+        Meteor.call("addBoxToScene", Session.get("sceneId"), box);
+      } else if (event.button === 4 || event.button === 2) {
+        // right click to remove box
+        Meteor.call("removeBoxFromScene",
+          Session.get("sceneId"), event.currentTarget.id);
+      }
     }
   },
   "viewpointChanged viewpoint": function (event) {
