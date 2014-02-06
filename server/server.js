@@ -68,13 +68,23 @@ Meteor.methods({
     }
 
     if (scene.frozen) {
-      throw new Meteor.Error(403, "Can't add blocks to frozen scene.");
+      throw new Meteor.Error(403, "Can't remove blocks from frozen scene.");
     }
 
     Boxes.remove(boxId);
   },
   clearBoxes: function (sceneId) {
     check(sceneId, String);
+
+    var scene = Scenes.findOne(sceneId);
+    if (! scene) {
+      throw new Meteor.Error(403, "Scene doesn't exist.");
+    }
+
+    if (scene.frozen) {
+      throw new Meteor.Error(403, "Can't remove blocks from frozen scene.");
+    }
+
     Boxes.remove({sceneId: sceneId});
   },
   newScene: function () {
