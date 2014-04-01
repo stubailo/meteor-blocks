@@ -82,7 +82,7 @@ Template.controls.events({
     }
   },
   "click button.freeze": function () {
-    savedViewpoint = Session.set("currentViewpoint");
+    savedViewpoint = Session.get("currentViewpoint");
 
     var o = savedViewpoint.orientation;
     var p = savedViewpoint.position;
