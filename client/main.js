@@ -1,6 +1,10 @@
 Template.home.helpers({
   scenes: function () {
     // all frozen scenes
+    if (Session.get("showAll")) {
+      return Scenes.find({}, {sort: {createdAt: -1}});
+    }
+
     return Scenes.find({}, {sort: {createdAt: -1}, limit: 30});
   },
   calendar: function (date) {

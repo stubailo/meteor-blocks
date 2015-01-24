@@ -7,12 +7,15 @@ var triggerGoogleAnalytics = function () {
 var RouterClass = Backbone.Router.extend({
   routes: {
     "": "home",
-    "scene/:_id": "scene"
+    "scene/:_id": "scene",
+    "all": "all"
   },
 
   home: function () {
     triggerGoogleAnalytics();
     Session.set("sceneId", null);
+    Session.set("showAll", false);
+
     Meteor.subscribe("frozenScenes");
   },
 
@@ -41,6 +44,14 @@ var RouterClass = Backbone.Router.extend({
         self.navigate("");
       }
     });
+  },
+
+  all: function () {
+    triggerGoogleAnalytics();
+    Session.set("sceneId", null);
+    Session.set("showAll", true);
+
+    Meteor.subscribe("frozenScenes");
   }
 });
 
