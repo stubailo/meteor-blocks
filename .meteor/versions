@@ -6,7 +6,6 @@ binary-heap@1.0.1
 blaze-tools@1.0.1
 blaze@2.0.3
 boilerplate-generator@1.0.1
-bootstrap-3@0.0.0
 callback-hook@1.0.1
 check@1.0.2
 ctl-helper@1.0.4
@@ -47,6 +46,7 @@ spacebars@1.0.3
 standard-app-packages@1.0.3
 templating@1.0.9
 tracker@1.0.3
+twbs:bootstrap@3.3.1_2
 ui@1.0.4
 underscore@1.0.1
 url@1.0.2

@@ -7,5 +7,6 @@ standard-app-packages
 less
 check
 backbone
-bootstrap-3
 http
+twbs:bootstrap
+
